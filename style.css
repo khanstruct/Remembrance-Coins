@@ -1,0 +1,236 @@
+/* =======================================================
+   APOCRYPHA — REMEMBRANCE COINS
+   ======================================================= */
+
+html {
+    min-height: 100%;
+    background: #05070c;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 24px 16px 50px;
+
+    box-sizing: border-box;
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(28, 55, 92, 0.22) 0%,
+            rgba(8, 12, 20, 0.95) 45%,
+            #03050a 100%
+        );
+
+    color: #e8edf5;
+    font-family: Georgia, "Times New Roman", serif;
+    text-align: center;
+}
+
+/* Darkens the outer edges of the screen */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 35%,
+            rgba(0, 0, 0, 0.35) 70%,
+            rgba(0, 0, 0, 0.8) 100%
+        );
+}
+
+/* Creates faint drifting blue motes */
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: -100px;
+    pointer-events: none;
+    z-index: 0;
+
+    background-image:
+        radial-gradient(circle, rgba(150, 205, 255, 0.75) 0 1px, transparent 2px),
+        radial-gradient(circle, rgba(90, 155, 255, 0.45) 0 1px, transparent 2px),
+        radial-gradient(circle, rgba(185, 225, 255, 0.35) 0 1px, transparent 2px);
+
+    background-size:
+        110px 110px,
+        170px 170px,
+        230px 230px;
+
+    background-position:
+        20px 30px,
+        70px 100px,
+        130px 40px;
+
+    opacity: 0.45;
+
+    animation: driftingMotes 28s linear infinite;
+}
+
+/* Keeps the actual content above the background effects */
+
+h1,
+img,
+p {
+    position: relative;
+    z-index: 2;
+}
+
+/* -------------------- Title -------------------- */
+
+h1 {
+    max-width: 800px;
+    margin: 0 auto 18px;
+
+    font-size: clamp(28px, 8vw, 44px);
+    font-weight: normal;
+    letter-spacing: 0.03em;
+
+    color: #d8ecff;
+
+    text-shadow:
+        0 0 8px rgba(120, 170, 255, 0.45),
+        0 0 24px rgba(70, 120, 255, 0.25);
+
+    opacity: 0;
+
+    animation: titleAppear 1.8s forwards;
+    animation-delay: 0.8s;
+}
+
+/* -------------------- Coin Image -------------------- */
+
+img {
+    display: block;
+
+    width: min(88vw, 460px);
+    max-height: 52vh;
+    object-fit: contain;
+    height: auto;
+
+    margin: 0 auto;
+
+    opacity: 0;
+
+    filter:
+        drop-shadow(0 0 12px rgba(125, 185, 255, 0.38))
+        drop-shadow(0 0 34px rgba(70, 120, 255, 0.24));
+
+    animation:
+        coinAppear 1.7s forwards,
+        coinPulse 5s ease-in-out 2.2s infinite;
+}
+
+/* -------------------- Description -------------------- */
+
+p {
+    max-width: 700px;
+
+    margin: 24px auto 0;
+
+    font-size: clamp(17px, 4.8vw, 21px);
+    line-height: 1.65;
+
+    color: #d9dde6;
+
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.9);
+
+    opacity: 0;
+
+    animation: textAppear 2s forwards;
+    animation-delay: 1.7s;
+}
+
+/* =======================================================
+   ANIMATIONS
+   ======================================================= */
+
+@keyframes coinAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.82);
+        filter:
+            blur(8px)
+            drop-shadow(0 0 4px rgba(125, 185, 255, 0.15));
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+        filter:
+            blur(0)
+            drop-shadow(0 0 12px rgba(125, 185, 255, 0.38))
+            drop-shadow(0 0 34px rgba(70, 120, 255, 0.24));
+    }
+}
+
+@keyframes titleAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes textAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes coinPulse {
+    0%,
+    100% {
+        filter:
+            drop-shadow(0 0 12px rgba(125, 185, 255, 0.32))
+            drop-shadow(0 0 30px rgba(70, 120, 255, 0.18));
+    }
+
+    50% {
+        filter:
+            drop-shadow(0 0 18px rgba(155, 210, 255, 0.55))
+            drop-shadow(0 0 52px rgba(80, 140, 255, 0.32));
+    }
+}
+
+@keyframes driftingMotes {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-80px, -180px, 0);
+    }
+}
+
+/* Reduces motion for users whose devices request it */
+
+@media (prefers-reduced-motion: reduce) {
+    h1,
+    img,
+    p,
+    body::after {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}

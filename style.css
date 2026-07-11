@@ -1,6 +1,10 @@
 /* =======================================================
    APOCRYPHA — REMEMBRANCE COINS
    ======================================================= */
+:root {
+    --glow-start: rgba(125, 185, 255, 0.38);
+    --glow-end: rgba(70, 120, 255, 0.38);
+}
 
 html {
     min-height: 100%;
@@ -78,7 +82,7 @@ body::after {
 /* Keeps the actual content above the background effects */
 
 h1,
-img,
+.crystal,
 p {
     position: relative;
     z-index: 2;
@@ -97,36 +101,85 @@ h1 {
     color: #d8ecff;
 
     text-shadow:
-        0 0 8px rgba(120, 170, 255, 0.45),
-        0 0 24px rgba(70, 120, 255, 0.25);
+        0 0 8px var(--glow-start),
+        0 0 24px var(--glow-end);
 
-    opacity: 0;
+        opacity: 0;
 
     animation: titleAppear 1.8s forwards;
     animation-delay: 0.8s;
 }
 
 /* -------------------- Coin Image -------------------- */
+/* -------------------- Crystal Container -------------------- */
 
+.crystal {
+    position: relative;
+
+    width: min(88vw, 52vh, 460px);
+    aspect-ratio: 1 / 1;
+
+    margin: 0 auto;
+
+    overflow: visible;
+    border-radius: 50%;
+
+    animation: crystalGlow 5s ease-in-out 2.2s infinite;
+}
+
+/* Clips the shimmer to the circular crystal,
+   while allowing the outer glow to remain visible */
+
+.crystal-inner {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+/* Sweeping light across the crystal */
+
+.crystal-inner::after {
+    content: "";
+
+    position: absolute;
+    top: -20%;
+    left: -75%;
+
+    width: 38%;
+    height: 140%;
+
+    z-index: 3;
+    pointer-events: none;
+
+    background: linear-gradient(
+        105deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.02) 30%,
+        rgba(255, 255, 255, 0.26) 50%,
+        rgba(255, 255, 255, 0.02) 70%,
+        transparent 100%
+    );
+
+    transform: skewX(-18deg);
+
+    animation: crystalShimmer 9s ease-in-out 3s infinite;
+}
 img {
     display: block;
 
-    width: min(88vw, 460px);
-    max-height: 52vh;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    height: auto;
 
     margin: 0 auto;
 
     opacity: 0;
 
-    filter:
-        drop-shadow(0 0 12px rgba(125, 185, 255, 0.38))
-        drop-shadow(0 0 34px rgba(70, 120, 255, 0.24));
-
-    animation:
-        coinAppear 1.7s forwards,
-        coinPulse 5s ease-in-out 2.2s infinite;
+    animation: coinAppear 1.7s forwards;
 }
 
 /* -------------------- Description -------------------- */
@@ -153,23 +206,38 @@ p {
 /* =======================================================
    ANIMATIONS
    ======================================================= */
+@keyframes crystalShimmer {
+    0% {
+        left: -75%;
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 1;
+    }
+
+    30% {
+        left: 135%;
+        opacity: 0;
+    }
+
+    100% {
+        left: 135%;
+        opacity: 0;
+    }
+}
 
 @keyframes coinAppear {
     from {
         opacity: 0;
         transform: scale(0.82);
-        filter:
-            blur(8px)
-            drop-shadow(0 0 4px rgba(125, 185, 255, 0.15));
+        filter: blur(8px);
     }
 
     to {
         opacity: 1;
         transform: scale(1);
-        filter:
-            blur(0)
-            drop-shadow(0 0 12px rgba(125, 185, 255, 0.38))
-            drop-shadow(0 0 34px rgba(70, 120, 255, 0.24));
+        filter: blur(0);
     }
 }
 
@@ -197,18 +265,18 @@ p {
     }
 }
 
-@keyframes coinPulse {
+@keyframes crystalGlow {
     0%,
     100% {
-        filter:
-            drop-shadow(0 0 12px rgba(125, 185, 255, 0.32))
-            drop-shadow(0 0 30px rgba(70, 120, 255, 0.18));
+        box-shadow:
+            0 0 18px var(--glow-start),
+            0 0 38px var(--glow-start);
     }
 
     50% {
-        filter:
-            drop-shadow(0 0 18px rgba(155, 210, 255, 0.55))
-            drop-shadow(0 0 52px rgba(80, 140, 255, 0.32));
+        box-shadow:
+            0 0 28px var(--glow-end),
+            0 0 65px var(--glow-end);
     }
 }
 
@@ -221,6 +289,8 @@ p {
         transform: translate3d(-80px, -180px, 0);
     }
 }
+
+
 
 /* Reduces motion for users whose devices request it */
 
